@@ -29,6 +29,10 @@ public class Layer {
     }
 
     public double[] forward(double[] input){
+        if(input.length != this.inSize){
+            System.err.println("Incorrect Input Dimension");
+            System.exit(0);
+        }
         double[] output = new double[this.size];
         for(int i=0;i<this.size;i++){
             output[i] = this.neurons[i].forward(input);

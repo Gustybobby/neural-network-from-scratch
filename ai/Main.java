@@ -1,16 +1,30 @@
-import model.Model;
-import policy.NeuralNetPolicy;
-import policy.OneStepPolicy;
-import policy.Policy;
+import activation.Tanh;
+import cost.SquaredError;
+import layer.Layer;
+import main.NeuralNetwork;
 
 public class Main {
     public static void main(String[] args){
-        Policy policy1 = new NeuralNetPolicy(0.01, 0.01);
-        Policy policy2 = new OneStepPolicy();
-        Model model = new Model(3, 3, policy2, policy1);
-        model.train(100000, 10000, 1000);
-        System.out.println("Evaluation over 100000 Sample Games");
-        model.compete(100000);
-        System.out.println("-------------------------------------------------");
+        Layer[] layers = {
+            new Layer(4, 8, new Tanh()),
+            new Layer(8, 8, new Tanh()),
+            new Layer(8, 1, new Tanh())
+        };
+        NeuralNetwork nn = new NeuralNetwork(layers, new SquaredError(), 0.01);
+        double[] a = {0,0,0,0};
+        double[] b = {0,0,1,0};
+        double[] c = {0,1,0,0};
+        double[] d = {1,1,1,1};
+        double[][] inputs = {a,b,c,d};
+        double[] out0 = {0};
+        double[] out1 = {1};
+        double[][] outputs = {out1, out0, out0, out1};
+        for(int i=0;i<10000;i++){
+            nn.batchTrain(inputs, outputs);
+        }
+        System.out.println(nn.forward(a)[0]);
+        System.out.println(nn.forward(b)[0]);
+        System.out.println(nn.forward(c)[0]);
+        System.out.println(nn.forward(d)[0]);
     }
 }

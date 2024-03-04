@@ -36,12 +36,18 @@ We expect the network to be able to exploit these behaviors and also defends aga
 In this section, we aim to describe the effects of learning rate and episodes per descent on the performance of the network.\
 I ran tests with 6 configurations listed below
 
-1. ep/descent: 100, learning rate: 1e-4
-2. ep/descent: 100, learning rate: 0.001
-3. ep/descent: 100, learning rate: 0.01
-4. ep/descent: 10 , learning rate: 1e-4
-5. ep/descent: 10 , learning rate: 0.001
-6. ep/descent: 10 , learning rate: 0.01
+1. ep/descent: 100, learning rate: 1e-4\
+![ep_descent_100_lr_1e-4](/ai/game/tic_tac_toe/asset/onestep/gd100_df0.95_imtrue_5_32_gr0.0_lr1.0E-4.png)
+2. ep/descent: 100, learning rate: 0.001\
+![ep_descent_100_lr_0.001](/ai/game/tic_tac_toe/asset/onestep/gd100_df0.95_imtrue_5_32_gr0.0_lr0.001.png)
+3. ep/descent: 100, learning rate: 0.01\
+![ep_descent_100_lr_0.01](/ai/game/tic_tac_toe/asset/onestep/gd100_df0.95_imtrue_5_32_gr0.0_lr0.01.png)
+4. ep/descent: 10 , learning rate: 1e-4\
+![ep_descent_10_lr_1e-4](/ai/game/tic_tac_toe/asset/onestep/gd10_df0.95_imtrue_5_32_gr0.0_lr1.0E-4.png)
+5. ep/descent: 10 , learning rate: 0.001\
+![ep_descent_10_lr_0.001](/ai/game/tic_tac_toe/asset/onestep/gd10_df0.95_imtrue_5_32_gr0.0_lr0.001.png)
+6. ep/descent: 10 , learning rate: 0.01\
+![ep_descent_10_lr_0.01](/ai/game/tic_tac_toe/asset/onestep/gd10_df0.95_imtrue_5_32_gr0.0_lr0.01.png)
 
 All the tests simulates 100,000 episodes with 0 greed (no random actions), discount factor of 0.95. The neural network weights and biases are initialized to random values between -1 and 1. I ran 5 trials for each configuration to account for instability.\
 
@@ -55,9 +61,15 @@ MCTS performance is heavily dependent on the number of search iterations used du
 
 In this section, we study the effect of greed (the episilon-greedy constant) on the convergence of the neural network against MCTS. MCTS is very different from the one-step look-ahead policy since, most of the time, one-step actions are probabilistic except for the winning move. We don't really need to consider the exploration aspect since the policy takes care of that for us. MCTS, however, behaves almost exactly the same way with every move since it will try to play the best move. This takes the exploration aspect out of the environment, so we have to incorporate it into our own learning experiences. As the moves are random for some epsilon-greedy value,the neural network is expected to converge to the expected value, not the optimal value. To account for this randomness, we introduce importance sampling so that the target policy can be learned while using another policy for generating the episodes. I ran tests with the four configurations below.
 
-1. greed: 0.05, imp_samp = true
-2. greed: 0.05, imp_samp = false
-3. greed: 0.1 , imp_samp = true
-4. greed: 0.1 , imp_samp = false
+1. greed: 0.05, imp_samp = true\
+![greed_0.05_imp_samp_true](/ai/game/tic_tac_toe/asset/mcts/gd10_df0.8_imtrue_5_32_gr0.05_lr0.001.png)
+2. greed: 0.05, imp_samp = false\
+![greed_0.05_imp_samp_false](/ai/game/tic_tac_toe/asset/mcts/gd10_df0.8_imfalse_5_32_gr0.05_lr0.001.png)
+3. greed: 0.1 , imp_samp = true\
+![greed_0.1_imp_samp_true](/ai/game/tic_tac_toe/asset/mcts/gd10_df0.8_imtrue_5_32_gr0.1_lr0.001.png)
+4. greed: 0.1 , imp_samp = false\
+![greed_0.1_imp_samp_false](/ai/game/tic_tac_toe/asset/mcts/gd10_df0.8_imfalse_5_32_gr0.1_lr0.001.png)
 
-All the tests simulate 100,000 episodes, a 0.001 learning rate, 10 episodes per child, and a discount factor of 0.8. MCTS uses search iterations of 200 per move. The neural network weights and biases are initialized to random values between -1 and 1. I ran 3 trials for each configuration to account for instability.\
+All the tests simulate 500,000 episodes, a 0.001 learning rate, 10 episodes per descent, and a discount factor of 0.8. MCTS uses search iterations of 200 per move. The neural network weights and biases are initialized to random values between -1 and 1. I ran 3 trials for each configuration to account for instability.\
+
+According to the results, for no-importance sampling, Epsilon greed of 0.05 leads to more stable convergences. But with importance sampling turned on, Epsilon greed of 0.1 results in better convergences toward optimal policy, while both convergences are more stable than the one with no importance sampling. So we can say that using importance sampling with a substantial amount of epsilon greed results in more stable and robust convergences toward the optimal policy. You can see that most of the learning experiences often stay flat until a sudden, big step down happens. This is due to the difficulty of the environment navigated by the agent. The agent got stuck in some local optimum and, after some time, found a better sequence of actions due to its epsilon greedy policy.

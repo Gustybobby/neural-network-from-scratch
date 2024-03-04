@@ -1,13 +1,13 @@
-package main;
+package neural_network;
 
-import component.Neuron;
-import cost.Cost;
-import layer.Layer;
+import neural_network.component.Neuron;
+import neural_network.cost.Cost;
+import neural_network.layer.Layer;
 
 public class NeuralNetwork {
     Layer[] layers;
     Cost costFunction;
-    double learningRate;
+    public double learningRate;
 
     public NeuralNetwork(Layer[] layers, Cost costFunction, double learningRate) {
         this.layers = layers;
@@ -22,7 +22,6 @@ public class NeuralNetwork {
             double[] output = this.train(inputs[i], expectedOutputs[i]);
             averageLoss += this.loss(output, expectedOutputs[i]);
         }
-        this.gradientDescent();
         return averageLoss / (double) inputs.length;
     }
 
@@ -102,5 +101,13 @@ public class NeuralNetwork {
         for (int i = 0; i < this.layers.length - 1; i++) {
             Layer.connects(this.layers[i], this.layers[i + 1]);
         }
+    }
+
+    public int getLayersLength() {
+        return this.layers.length;
+    }
+
+    public int getLayerSize(int i) {
+        return this.layers[i].neurons.length;
     }
 }

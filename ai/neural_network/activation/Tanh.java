@@ -1,4 +1,4 @@
-package activation;
+package neural_network.activation;
 
 public class Tanh extends Activation {
     public double activate(double input) {

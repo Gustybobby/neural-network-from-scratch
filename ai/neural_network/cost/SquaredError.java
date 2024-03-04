@@ -1,4 +1,4 @@
-package cost;
+package neural_network.cost;
 
 public class SquaredError extends Cost {
     public double calculateCost(double value, double expectedValue) {

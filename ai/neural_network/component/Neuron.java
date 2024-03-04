@@ -1,6 +1,6 @@
-package component;
+package neural_network.component;
 
-import activation.Activation;
+import neural_network.activation.Activation;
 
 public class Neuron {
     int position;

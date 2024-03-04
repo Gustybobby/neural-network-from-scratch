@@ -154,4 +154,4 @@ Gradient descent will be performed seperately. We can use different configuratio
 
 Below is a list of use cases and environments experimented
 
-- Reinforcement Learning
+- [Tic Tac Toe](/ai/game/tic_tac_toe/README.md)
